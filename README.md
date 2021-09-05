@@ -10,6 +10,8 @@ bug.n.simplified is a fork of bug.n, but with all the stuff I don't actively use
 * Favor consistency over cool features for some windows and exceptions for others.
 ** Don't bother de-decorating windows. So many Win10 apps are themed and have exceptions to the rule that it's better to keep the decorator.
 
+![image](https://user-images.githubusercontent.com/57881574/132135880-9385a9e2-baa0-4000-b7d6-78862021e644.png)
+
 
 ## bug.n &ndash; Tiling Window Management
 
