@@ -1,3 +1,16 @@
+## bug.n.simplified 
+
+bug.n.simplified is a fork of bug.n, but with all the stuff I don't actively use stripped out.
+
+### Goals
+
+* Focus on the tiling and session management.
+* Augment the windows taskbar instead of trying to replace it.
+** 
+* Favor consistency over cool features for some windows and exceptions for others.
+** Don't bother de-decorating windows. So many Win10 apps are themed and have exceptions to the rule that it's better to keep the decorator.
+
+
 ## bug.n &ndash; Tiling Window Management
 
 bug.n is a
@@ -13,14 +26,14 @@ scripting language [AutoHotkey](https://www.autohotkey.com/download/).
   you need to do your work.
 * Dynamically resize and move your windows, applying a specified layout,
   without you having to care about moving them all by mouse
-* Increase the available screen estate by hiding and therewith freeing up the
+* ~Increase the available screen estate by hiding and therewith freeing up the
   space occupied by the Microsoft Windows Taskbar and the title bar for every
   single window and replacing all with a single slim status bar (-- but bug.n
-  is not a shell replacement)
-* Show window management information in the status bar: active window title,
+  is not a shell replacement)~
+* Show window management information in the status bar: ~active window title~,
   active layout, overview of the views used
-* Show system information in the status bar: time and date, CPU and memory
-  usage, disk and network load, battery and volume level
+* ~Show system information in the status bar: time and date, CPU and memory
+  usage, disk and network load, battery and volume level~
 * Store your settings, i. e. which windows and layout were set on a specific
   view
 * Support multiple monitors
