@@ -22,6 +22,7 @@ class Configuration {
                           , {symbol: "iii", name: "i3wmLayout"}]
 
     this.layoutGap := 0
+    this.cursorFollowsFocus := True
 
     ;; The first item is set to be the initial layout of work areas.
     ;; Layout names are related to class names by "<Name>Layout".
