@@ -21,6 +21,7 @@ class MinimalUserInterface {
   }
   
   _init() {
+    Global logger
     this.updateItems("", True)
     For part, updateInterval in this.updateIntervals {
       If (updateInterval > 0) {

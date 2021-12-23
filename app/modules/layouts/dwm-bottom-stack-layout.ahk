@@ -16,13 +16,19 @@ class DwmBottomStackLayout {
     this.nmaster := 1
   }
   
-  arrange(x, y, w, h, windows) {
+  arrange(gap, x, y, w, h, windows) {
     ;; Arrange windows in master area.
     m := windows.Length() <= this.nmaster ? windows.Length() : this.nmaster
-    wndX := x
-    wndY := y
-    wndW := Round(w / m)
-    wndH := (windows.Length() <= this.nmaster ? 1 : this.mfact) * h
+    ; wndX := x
+    ; wndY := y
+    ; wndW := Round(w / m)
+    ; wndH := (windows.Length() <= this.nmaster ? 1 : this.mfact) * h
+
+    wndX := x + gap
+    wndY := y + gap
+    wndW := ( Round(w / m) ) - (2 * gap)
+    wndH := ((windows.Length() <= this.nmaster ? 1 : this.mfact) * h ) - (2 * gap)
+
     Loop, % m {
       windows[A_Index].move(wndX, wndY, wndW, wndH)
       windows[A_Index].runCommand("top")
@@ -31,15 +37,21 @@ class DwmBottomStackLayout {
     ;; Arrange windows in stack area.
     n := windows.Length() - m
     If (n > 0) {
-      wndX := x
-      wndY := y + (this.mfact * h)
-      wndW := Round(w / n)
-      wndH := (1 - this.mfact) * h
+      ; wndX := x
+      ; wndY := y + (this.mfact * h)
+      ; wndW := Round(w / n)
+      ; wndH := (1 - this.mfact) * h
+
+      wndX := x + gap
+      wndY := (y + (this.mfact * h)) 
+      wndW := (Round(w / n)) - (2 * gap ) 
+      wndH := ((1 - this.mfact) * h) - ( gap)
+
       Loop, % n {
         i := m + A_Index
         windows[i].move(wndX, wndY, wndW, wndH)
         windows[i].runCommand("top")
-        wndX += wndW
+        wndX += wndW + gap
       }
     }
   }

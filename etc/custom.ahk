@@ -27,12 +27,14 @@ started by putting them in there.
 #Include, %A_ScriptDir%\modules\layouts\dwm-tile-layout.ahk
 #Include, %A_ScriptDir%\modules\layouts\floating-layout.ahk
 #Include, %A_ScriptDir%\modules\layouts\i3wm-layout.ahk
+
 ;; If you remove one of the `layouts\*-layout.ahk` includes above and are using the `configuration\default`, 
 ;; you will also have to remove the corresponding item from `cfg.defaultLayouts` by redefining it below.
 
-#Include, %A_ScriptDir%\modules\user-interfaces\tray-icon-user-interface.ahk
-#Include, %A_ScriptDir%\modules\user-interfaces\app-user-interface.ahk
-#Include, %A_ScriptDir%\modules\user-interfaces\system-status-bar-user-interface.ahk
+ #Include, %A_ScriptDir%\modules\user-interfaces\tray-icon-user-interface.ahk
+ #Include, %A_ScriptDir%\modules\user-interfaces\app-user-interface.ahk
+ ;#Include, %A_ScriptDir%\modules\user-interfaces\system-status-bar-user-interface.ahk
+
 ;; If you remove one of the `user-interfaces\*-user-interface.ahk` includes above and are using the `configuration\default`,
 ;; you will also have to remove the corresponding item from `cfg.userInterfaces` by redefining it below.
 
@@ -40,19 +42,98 @@ started by putting them in there.
 class Customizations {
   __New() {
     Global cfg, logger
-		
-    ;; Overwrite cfg.* variables.
-    ;; If (A_ComputerName == <computer name>) {
-    ;; }
+
+    cfg.layoutGap := 3
+
+    ;; Overwrite cfg.* variables.       
+    ;; The rules in `windowManagementRules` are processed in the order of the array.
+    ;; A `windowManagementRules` array item should be an object, which may contain the following keys: 
+    ;;    `windowProperties`, `tests`, `commands`, `functions` and `break`.
+    ;; `windowProperties` should be an object, which may contain the following keys:
+    ;;    `title`, `class`, `style`, `exStyle`, `pId`, `pName`, `pPath`, 
+    ;;    `hasCaption`, `isAppWindow`, `isChild`, `isCloaked`, `isElevated`, `isGhost`, `isPopup` and `minMax`.
+    ;; `tests` should be an array of objects containing the following keys:
+    ;;    `object`: A object name.
+    ;;    `method`: A metheod of the given object.
+    ;;    `parameters`: An array of parameters passed to the object method.
+    ;;    The method takes a window object as its first argument additional to the parameters given by the rule.
+    ;;    The method will return `True` or `False`.
+    ;; All `windowProperties` and `assertions` are concatenated by ´logical and´s.
+    ;; `commands` should be an array, which may contain one or more of the following window related commands:
+    ;;    `activate`, `close`, `hide`, `maximize`, `minimize`, `restore`, `setCaption`, `show`, `unsetCaption`
+    ;;    `bottom`, `setAlwaysOnTop`, `toggleAlwaysOnTop` and `top`
+    ;; `functions` should be an object, which may contain the following keys:
+    ;;    `setWindowWorkArea`, `setWindowFloating`, `goToDesktop`, `switchToWorkArea` and `switchToLayout`.
+    ;; If `break` is set to `True`, the processing is stopped after evaluating the current rule.     
+
     
+    cfg.windowManagementRules := [{windowProperties: {desktop: 0}, break: True} ;; Exclude hidden (?) windows.
+		;, {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
+		, {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
+		, {windowProperties: {class: "WorkerW", pName: "Explorer.EXE"}, break: True} ;; Exclude pop-up windows.
+		;
+    , {windowProperties: {pName: "Greenshot\.exe"}, break: True}
+    , {windowProperties: {pName: "ncpmon\.exe"}, break: True}
+    , {windowProperties: {pName: "SWGVC\.exe"}, break: True}
+    , {windowProperties: {pName: "TogglDesktop\.exe"}, break: True}
+    , {windowProperties: {pName: "Teams\.exe"}, break: True}
+    , {windowProperties: {class: "CabinetWClass", pName: "Explorer\.EXE"}, break: True}
+    , {windowProperties: {class: "TaskManagerWindow"}, break: True}
+		
+		;; float outlook meeting, message windows while tiling others
+		, {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK.EXE", title: ".* Message *"}, break: True}
+		, {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK.EXE", title: ".* Meeting *"}, break: True}
+	  , {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK.EXE", title: ".* Appointment *"}, break: True}
+	  , {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK.EXE", title: ".* Event *"}, break: True}
+
+    ;; ////////////////////////////////////////////////////////////////////// 
+    ;; Above this line are exclusions, i.e. no `functions`, but `break: True`.
+    ;; //////////////////////////////////////////////////////////////////////
+
+      , {functions: {setWindowFloating: False}}   ;; Set windows non-floating, if not already excluded.
+
+    ;; ////////////////////////////////////////////////////////////////////// 
+    ;; Specific window functions
+    ;; //////////////////////////////////////////////////////////////////////
+
+
+
+      ;, {windowProperties: {pName: "firefox\.exe"}, functions: {setWindowWorkArea: "1-1"}, break: True}
+      ;, {windowProperties: {pName: "Spotify\.exe"}, functions: {setWindowWorkArea: "1-1"}, break: True}
+      ;, {windowProperties: {title: "D:\\development\\bug.n\\_git*"}, functions: {setWindowWorkArea: "2-1"}, break: True}
+      , {functions: {setWindowWorkArea: "1"}}]    ;; Set windows to work area 1, if no `break: True` was set previously.
+
+
+     cfg.positions[11] := [  0,   0,  70, 100]	;; left 0.70
+		 
+		 /*
+    cfg.environments := {office: [{id: "Kalender.* ahk_exe OUTLOOK.EXE",                    workGroup: 1}
+                                , {id: "Posteingang.* ahk_exe OUTLOOK.EXE",                               position: 10}
+                                , {id: ".*Mozilla Firefox ahk_exe firefox.exe",             workGroup: 2, position: 10}]
+                          , dev: [{id: ".*bug\.n.* ahk_exe explorer.exe",       desktop: 2, workGroup: 1}
+                                , {id: ".*Textadept.* ahk_exe textadept.exe",   desktop: 2,               position: 11}]}
+
+      this.onMessageDelay := {shellEvent: 0, desktopChange: 200}
+      cfg.desktops := [{label: "1",    workAreas: [{rect: New Rectangle(  0, 0, 1366, 768), isPrimary: True,  showBar: True, layoutA: [1, 2]}]}
+                     , {label: "dev",  workAreas: [{rect: New Rectangle(  0, 0, 1366, 768), isPrimary: True,  showBar: True, layoutA: [1, 2]}]}
+                     , {label: "test", workAreas: [{rect: New Rectangle(  0, 0,  688, 768), isPrimary: True,  showBar: True, layoutA: [1, 3]}
+                                                 , {rect: New Rectangle(688, 0,  688, 768), isPrimary: False, showBar: True, layoutA: [1, 3]}]}
+                     , {label: "4",    workAreas: [{rect: New Rectangle(  0, 0, 1366, 768), isPrimary: True,  showBar: True, layoutA: [1, 2]}]}]
+ */
+
     logger.info("<b>Custom</b> configuration loaded.", "Customizations.__New")
+		
   }
-  
+
   _init() {
     Global mgr
-    
+
+    ;; get rid of user interface
+    ;;mgr.primaryUserInterface.Delete()
+
     ;; Overwrite hotkeys.
     ;; funcObject := ObjBindMethod(mgr, <function name> [, <function arguments>])
     ;; Hotkey, <key name>, %funcObject%
+
   }
 }

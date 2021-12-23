@@ -14,9 +14,15 @@ class DwmMonocleLayout {
     this.symbol := "[M]"
   }
   
-  arrange(x, y, w, h, windows) {
+  arrange(gap, x, y, w, h, windows) {
+
+    wndX := x + gap
+    wndY := y + gap
+    wndW := w - (2 * gap)
+    wndH := h - (2 * gap)
+
     For i, wnd in windows {
-      wnd.move(x, y, w, h)
+      wnd.move(wndX, wndY, wndW, wndH)
     }
     this.symbol := "[" . windows.Length() . "]"
   }

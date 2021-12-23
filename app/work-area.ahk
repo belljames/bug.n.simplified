@@ -19,6 +19,8 @@ class WorkArea extends Rectangle {
     this.w := rect.w
     this.h := rect.h
     
+    this.gap := cfg.layoutGap
+
     this.isPrimary := False
     this.showBar := cfg.showBar
     this.uiface := ""
@@ -69,8 +71,11 @@ class WorkArea extends Rectangle {
         windows.push(wnd)
       }
     }
-    this.layoutA[1].arrange(this.x, this.y + (this.showBar && IsObject(this.uiface) ? this.uiface.barH : 0)
-                          , this.w, this.h - (this.showBar && IsObject(this.uiface) ? this.uiface.barH : 0), windows)
+    ; this.layoutA[1].arrange(this.x, this.y + (this.showBar && IsObject(this.uiface) ? this.uiface.barH : 0)
+    ;                       , this.w, this.h - (this.showBar && IsObject(this.uiface) ? this.uiface.barH : 0), windows)
+  
+      this.layoutA[1].arrange(this.gap, this.x , this.y , this.w , this.h, windows)
+
   }
   
   getAdjacentWindowIndex(index, delta, matchFloating) {

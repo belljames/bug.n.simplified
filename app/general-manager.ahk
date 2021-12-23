@@ -125,61 +125,62 @@ class GeneralManager {
         this.uifaces[i]._init()
       }
       
-      For i, item in this.mMgr.monitors {
-        k := this.uifaces.Length() + 1
-        this.uifaces[k] := New WorkAreaUserInterface(k)
-        this.uifaces[k]["appCallFuncObject"] := ObjBindMethod(this, "_onAppCall")
+      ; For i, item in this.mMgr.monitors {
+      ;   k := this.uifaces.Length() + 1
+
+        ; this.uifaces[k] := New WorkAreaUserInterface(k)
+        ; this.uifaces[k]["appCallFuncObject"] := ObjBindMethod(this, "_onAppCall")
         
-        If (item.isPrimary) {
-          For key, index in cfg.defaultSystemStatusBarItems {
-            this.uiface[k].items.bar[key] := index
-          }
-          this.uifaces[k].includeAppIface := True
-          this.primaryUserInterface := this.uifaces[k]
-        } Else {
-          this.uifaces[k].items.content := {"work-areas": "06", "windows": "07", "layouts": "08"}
-          this.uifaces[k].updateIntervals := {}
-        }
+        ; If (item.isPrimary) {
+        ;   For key, index in cfg.defaultSystemStatusBarItems {
+        ;     this.uiface[k].items.bar[key] := index
+        ;   }
+        ;   this.uifaces[k].includeAppIface := True
+        ;   this.primaryUserInterface := this.uifaces[k]
+        ; } Else {
+        ;   this.uifaces[k].items.content := {"work-areas": "06", "windows": "07", "layouts": "08"}
+        ;   this.uifaces[k].updateIntervals := {}
+        ; }
         
-        this.uifaces[k].x := item.monitorWorkArea.x
-        this.uifaces[k].y := item.monitorWorkArea.y
-        this.uifaces[k].w := item.monitorWorkArea.w ;/ item.scaleX
-        this.uifaces[k].h := item.monitorWorkArea.h ;/ item.scaleY
+        ; this.uifaces[k].x := item.monitorWorkArea.x
+        ; this.uifaces[k].y := item.monitorWorkArea.y
+        ; this.uifaces[k].w := item.monitorWorkArea.w ;/ item.scaleX
+        ; this.uifaces[k].h := item.monitorWorkArea.h ;/ item.scaleY
         
-        this.uifaces[k]._init()
-        this.uifaces[k].fitContent(56)
-      }
+        ; this.uifaces[k]._init()
+        ; this.uifaces[k].fitContent(56)
+      ; }
       
-      ;; "<tr><th>Index</th><th>Label</th></tr>"
-      data := []
-      For i, item in this.desktops {
-        data.push([item.index, item.label])
-      }
-      this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["desktops"], data)
+      ; ;; "<tr><th>Index</th><th>Label</th></tr>"
+      ; data := []
+      ; For i, item in this.desktops {
+      ;   data.push([item.index, item.label])
+      ; }
+      ; this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["desktops"], data)
       
-      ;; "<tr><th>Index</th><th>Name</th><th>x-Coordinate</th><th>y-Coordinate</th><th>Width</th><th>Height</th><th>Scale x</th><th>Scale y</th></tr>"
-      data := []
-      For i, item in this.mMgr.monitors {
-        data.push([item.index, item.name, item.x, item.y, item.w, item.h, Format("{:i}%", item.scaleX * 100), Format("{:i}%", item.scaleY * 100)])
-      }
-      this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["monitors"], data)
+      ; ;; "<tr><th>Index</th><th>Name</th><th>x-Coordinate</th><th>y-Coordinate</th><th>Width</th><th>Height</th><th>Scale x</th><th>Scale y</th></tr>"
+      ; data := []
+      ; For i, item in this.mMgr.monitors {
+      ;   data.push([item.index, item.name, item.x, item.y, item.w, item.h, Format("{:i}%", item.scaleX * 100), Format("{:i}%", item.scaleY * 100)])
+      ; }
+      ; this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["monitors"], data)
       
-      ;; "<tr><th>Desktop</th><th>Index</th><th>x-Coordinate</th><th>y-Coordinate</th><th>Width</th><th>Height</th></tr>"
-      data := []
-      For i, item in this.desktops {
-        For j, wa in item.workAreas {
-          data.push([item.label, wa.index, wa.x, wa.y, wa.w, wa.h])
-        }
-      }
-      this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["work-areas"], data)
+      ; ;; "<tr><th>Desktop</th><th>Index</th><th>x-Coordinate</th><th>y-Coordinate</th><th>Width</th><th>Height</th></tr>"
+      ; data := []
+      ; For i, item in this.desktops {
+      ;   For j, wa in item.workAreas {
+      ;     data.push([item.label, wa.index, wa.x, wa.y, wa.w, wa.h])
+      ;   }
+      ; }
+      ; this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["work-areas"], data)
       
-      data := []
-      For id, item in this.windows {
-        data.push(this.primaryUserInterface.getContentItem("windows", item))
-      }
-      this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["windows"], data)
+      ; data := []
+      ; For id, item in this.windows {
+      ;   data.push(this.primaryUserInterface.getContentItem("windows", item))
+      ; }
+      ; this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["windows"], data)
       
-      this.updateBarItems(True)
+      ; this.updateBarItems(True)
     }
   }
   
@@ -197,16 +198,18 @@ class GeneralManager {
     desktopA := updateActive(this.desktopA, this.desktops[A])
       
     changes := this.detectWindows()
-    data := []
-    For i, wnd in changes.windows {
-      data.push(this.primaryUserInterface.getContentItem("windows", wnd))
-    }
-    this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["windows"], data)
+
+    ; data := []
+    ; For i, wnd in changes.windows {
+    ;   data.push(this.primaryUserInterface.getContentItem("windows", wnd))
+    ; }
+    ; this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["windows"], data)
+    
     For id, wa in changes.workAreas {
       wa.arrange()
     }
     desktopA.workAreaA[1].activate()
-    this.updateBarItems()
+    ;this.updateBarItems()
   }
   
   _onDisplayChange(wParam, lParam) {
@@ -230,15 +233,18 @@ class GeneralManager {
       this.shellEventCache.push(this.primaryUserInterface.getContentItem("messages", data))
       
       changes := this.detectWindows()
-      data := []
-      For i, wnd in changes.windows {
-        data.push(this.primaryUserInterface.getContentItem("windows", wnd))
-      }
-      this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["windows"], data)
+      
+      ;data := []
+      ;For i, wnd in changes.windows {
+      ;  data.push(this.primaryUserInterface.getContentItem("windows", wnd))
+      ;}
+      ;this.primaryUserInterface.insertContentItems(this.primaryUserInterface.items.content["windows"], data)
+      
       For id, wa in changes.workAreas {
         wa.arrange()
       }
-      this.updateBarItems()
+      
+      ;this.updateBarItems()
     }
   }
   
@@ -597,11 +603,16 @@ class GeneralManager {
   }
   
   updateBarItems(init := False) {
-    Global cfg
-    
+    Global cfg, app
+
     ;; {"desktops": "01", "layout": "02", "monitor": "03", "window": "04"}
     winTitle := ""
     wa := this.desktopA[1].workAreaA[1]
+
+    if (desktopA.workAreaA[1].showBar = False) {
+      Return
+    }
+
     If (IsObject(wa.windowA[1])) {
       wa.windowA[1].getProperties()
       winTitle := (wa.windowA[1].isFloating ? "~ " : "") . wa.windowA[1].title

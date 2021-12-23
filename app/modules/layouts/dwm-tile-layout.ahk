@@ -16,13 +16,18 @@ class DwmTileLayout {
     this.nmaster := 1
   }
   
-  arrange(x, y, w, h, windows) {
+  arrange(gap, x, y, w, h, windows) {
     ;; Arrange windows in master area.
     m := windows.Length() <= this.nmaster ? windows.Length() : this.nmaster
-    wndX := x
-    wndY := y
-    wndW := (windows.Length() <= this.nmaster ? 1 : this.mfact) * w
-    wndH := Round(h / m)
+    ; wndX := x
+    ; wndY := y
+    ; wndW := (windows.Length() <= this.nmaster ? 1 : this.mfact) * w
+    ; wndH := Round(h / m)
+    wndX := x + gap
+    wndY := y + gap
+    wndW := ((windows.Length() <= this.nmaster ? 1 : this.mfact) * w ) - ( 2 * gap )
+    wndH := ( Round(h / m) ) - ( 2 * gap )
+
     Loop, % m {
       windows[A_Index].move(wndX, wndY, wndW, wndH)
       windows[A_Index].runCommand("top")
@@ -31,15 +36,21 @@ class DwmTileLayout {
     ;; Arrange windows in stack area.
     n := windows.Length() - m
     If (n > 0) {
-      wndX := x + (this.mfact * w)
-      wndY := y
-      wndW := (1 - this.mfact) * w
-      wndH := Round(h / n)
+      ; wndX := x + (this.mfact * w)
+      ; wndY := y
+      ; wndW := (1 - this.mfact) * w
+      ; wndH := Round(h / n)
+
+      wndX := (x + (this.mfact * w)) ;+ gap
+      wndY := y + gap
+      wndW := ((1 - this.mfact) * w) - ( gap)
+      wndH := (Round(h / n)) - (2 * gap)
+
       Loop, % n {
         i := m + A_Index
         windows[i].move(wndX, wndY, wndW, wndH)
         windows[i].runCommand("top")
-        wndY += wndH
+        wndY += wndH + gap
       }
     }
   }
