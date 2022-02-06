@@ -66,25 +66,28 @@ class Customizations {
     ;;    `setWindowWorkArea`, `setWindowFloating`, `goToDesktop`, `switchToWorkArea` and `switchToLayout`.
     ;; If `break` is set to `True`, the processing is stopped after evaluating the current rule.     
 
-    
     cfg.windowManagementRules := [{windowProperties: {desktop: 0}, break: True} ;; Exclude hidden (?) windows.
 		;, {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
 		, {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
-		, {windowProperties: {class: "WorkerW", pName: "Explorer.EXE"}, break: True} ;; Exclude pop-up windows.
+		, {windowProperties: {pName: "EXCEL\.EXE", isPopup: True}, break: True} ;; Excel pop-up windows.
+		, {windowProperties: {class: "WorkerW", pName: "Explorer\.EXE"}, break: True} ;; Exclude pop-up windows.
+		, {windowProperties: {class: "DialogBox Container Class", pName: "saplogon\.exe"}, break: True} ;; Exclude pop-up windows.
 		;
     , {windowProperties: {pName: "Greenshot\.exe"}, break: True}
     , {windowProperties: {pName: "ncpmon\.exe"}, break: True}
     , {windowProperties: {pName: "SWGVC\.exe"}, break: True}
+    , {windowProperties: {pName: "f5vpn\.exe"}, break: True}
+
     , {windowProperties: {pName: "TogglDesktop\.exe"}, break: True}
     , {windowProperties: {pName: "Teams\.exe"}, break: True}
     , {windowProperties: {class: "CabinetWClass", pName: "Explorer\.EXE"}, break: True}
     , {windowProperties: {class: "TaskManagerWindow"}, break: True}
 		
 		;; float outlook meeting, message windows while tiling others
-		, {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK.EXE", title: ".* Message *"}, break: True}
-		, {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK.EXE", title: ".* Meeting *"}, break: True}
-	  , {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK.EXE", title: ".* Appointment *"}, break: True}
-	  , {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK.EXE", title: ".* Event *"}, break: True}
+		, {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK\.EXE", title: ".* Message *"}, break: True}
+		, {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK\.EXE", title: ".* Meeting *"}, break: True}
+	  , {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK\.EXE", title: ".* Appointment *"}, break: True}
+	  , {windowProperties: {class: "rctrl_renwnd32", pName: "OUTLOOK\.EXE", title: ".* Event *"}, break: True}
 
     ;; ////////////////////////////////////////////////////////////////////// 
     ;; Above this line are exclusions, i.e. no `functions`, but `break: True`.
@@ -106,6 +109,8 @@ class Customizations {
 
      cfg.positions[11] := [  0,   0,  70, 100]	;; left 0.70
 		 
+     cfg.onMessageDelay := {shellEvent: 100, desktopChange: 200}
+
 		 /*
     cfg.environments := {office: [{id: "Kalender.* ahk_exe OUTLOOK.EXE",                    workGroup: 1}
                                 , {id: "Posteingang.* ahk_exe OUTLOOK.EXE",                               position: 10}

@@ -45,7 +45,7 @@ class WorkArea extends Rectangle {
     If (this.windowA.Length() > 0) {
       this.windowA[1].runCommand("activate")
     } Else {
-      this.uiface.wnd.runCommand("activate")
+    ;;  this.uiface.wnd.runCommand("activate")
     }
   }
   
@@ -67,7 +67,7 @@ class WorkArea extends Rectangle {
   arrange() {
     windows := []
     For i, wnd in this.windows {
-      If (!wnd.isFloating) {
+      If (!wnd.isFloating and wnd.desktop != 0) {
         windows.push(wnd)
       }
     }

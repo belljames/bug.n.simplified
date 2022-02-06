@@ -6,7 +6,7 @@
     "configurations": [
 
         {
-            "type": "autohotkey",
+            "type": "ahkdbg",
             "request": "launch",
             "name": "AutoHotkey Debugger",
             //"program": "${file}",

@@ -141,6 +141,7 @@ class Configuration {
 ; #^r::Reload
 
 
+
 !k::mgr.activateWindowAtIndex(,, -1)
 !j::mgr.activateWindowAtIndex(,, +1)
 
@@ -204,8 +205,8 @@ class Configuration {
 ;#+x::mgr.moveWindowToPosition(, 8)
 ;#+c::mgr.moveWindowToPosition(, 9)
 
-#+b::mgr.toggleUserInterfaceBar()
-#+d::mgr.toggleWindowHasCaption()
+;#+b::mgr.toggleUserInterfaceBar()
+;#+d::mgr.toggleWindowHasCaption()
 ;;#+Space::mgr.activateWindowsTaskbar()
 
 #^l::logger.setLevel(, -1)

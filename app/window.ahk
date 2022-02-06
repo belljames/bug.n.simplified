@@ -254,7 +254,7 @@ class Window extends Rectangle {
       WinActivate, % "ahk_id " this.id
 
       ;; center cursor on active window
-      if (cfg.cursorFollowsFocus = True){
+      if (cfg.cursorFollowsFocus == True){
         this.getPosEx()
         DllCall("SetCursorPos", "Int", Round(this.x + this.w / 2), "Int", Round(this.y + this.h / 2))
       }
