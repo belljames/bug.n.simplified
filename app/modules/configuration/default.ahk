@@ -18,8 +18,7 @@ class Configuration {
     this.defaultLayouts := [{symbol: "[]=", name: "DwmTileLayout", mfact: 0.55, nmaster: 1}
                           , {symbol: "[M]", name: "DwmMonocleLayout"}
                           , {symbol: "TTT", name: "DwmBottomStackLayout", mfact: 0.55, nmaster: 1}
-                          , {symbol: "><>", name: "FloatingLayout"}
-                          , {symbol: "iii", name: "i3wmLayout"}]
+                          , {symbol: "><>", name: "FloatingLayout"}]
 
     this.layoutGap := 0
     this.cursorFollowsFocus := True
@@ -38,21 +37,10 @@ class Configuration {
                      , [ 50,  50,  50,  50]    ;; bottom right
                      , [  0,   0, 100, 100]]   ;; maximized
 
-;    this.defaultSystemStatusBarItems := {network: 17, disk: 18, memory: 19, processor: 20, battery: 21, volume: 22, date: 23, time: 24}
- ;   this.systemStatusBarUpdateInterval := 1000
- ;   this.networkInterfaces := []    
-  ;  this.dateFormat := "ddd, dd. MMM. yyyy"
-   ; this.timeFormat := "HH:mm"
-    ;this.batteryEmptyW3Color := "orange"
     this.showAllDesktops := True
-    ;this.showBar := True
-    this.showBar := False
-    this.logViewUpdateInterval := 6000
-    this.messagesViewUpdateInterval := 6000
     this.userInterfaces := [{name: "TrayIconUserInterface", tip: app.name, icon: app.logo}]
     this.onMessageDelay := {shellEvent: 0, desktopChange: 0}
-;;    this.disabledFeatures := {shellHook: False, webInterfaces: False, appCalls: False}
-    this.disabledFeatures := {shellHook: False, webInterfaces: True, appCalls: False}
+    this.disabledFeatures := {shellHook: False, appCalls: False}
 
 
     ;; The rules in `windowManagementRules` are processed in the order of the array.
@@ -140,77 +128,3 @@ class Configuration {
 ; #^q::ExitApp
 ; #^r::Reload
 
-
-
-!k::mgr.activateWindowAtIndex(,, -1)
-!j::mgr.activateWindowAtIndex(,, +1)
-
-#+Left::mgr.setLayoutProperty("nmaster",, +1)
-#+Right::mgr.setLayoutProperty("nmaster",, -1)
-
-!h::mgr.setLayoutProperty("mfact",, -0.05)
-!l::mgr.setLayoutProperty("mfact",, +0.05)
-
-!+k::mgr.moveWindowToPosition(,, -1)
-!+j::mgr.moveWindowToPosition(,, +1)
-!+Enter::mgr.moveWindowToPosition(, 1, 0)
-
-#^i::mgr.showWindowInformation()
-
-!q::mgr.closeWindow()
-
-#t::mgr.switchToLayout(1)
-#m::mgr.switchToLayout(2)
-#b::mgr.switchToLayout(3)
-#f::mgr.switchToLayout(4)
-
-!Backspace::mgr.switchToLayout(, +1)
-!+Backspace::mgr.switchToLayout(-1)
-#Space::mgr.toggleWindowIsFloating()
-
-!1::mgr.switchToDesktop(1)
-!2::mgr.switchToDesktop(2)
-!3::mgr.switchToDesktop(3)
-!4::mgr.switchToDesktop(4)
-
-;;!+Tab::mgr.switchToDesktop(-1)
-
-#!Left::mgr.switchToDesktop(, -1, True)
-#!Right::mgr.switchToDesktop(, +1, True)
-
-!+0::mgr.moveWindowToDesktop(, 0)
-!+1::mgr.moveWindowToDesktop(, 1)
-!+2::mgr.moveWindowToDesktop(, 2)
-!+3::mgr.moveWindowToDesktop(, 3)
-!+4::mgr.moveWindowToDesktop(, 4)
-
-#^+Left::mgr.moveWindowToDesktop(,, -1)
-#^+Right::mgr.moveWindowToDesktop(,, +1)
-
-#,::mgr.switchToWorkArea(, -1)
-#.::mgr.switchToWorkArea(, +1)
-
-#Enter::mgr.moveWindowToWorkArea()
-#+,::mgr.moveWindowToWorkArea(,, -1)
-#+.::mgr.moveWindowToWorkArea(,, +1)
-
-;; bug.n x.min
-;#+q::mgr.moveWindowToPosition(, 1)
-;#+w::mgr.moveWindowToPosition(, 2)
-;#+e::mgr.moveWindowToPosition(, 3)
-;#+a::mgr.moveWindowToPosition(, 4)
-;#+s::mgr.moveWindowToPosition(, 5)
-;#+d::mgr.moveWindowToPosition(, 6)
-;#+y::mgr.moveWindowToPosition(, 7)
-;#+x::mgr.moveWindowToPosition(, 8)
-;#+c::mgr.moveWindowToPosition(, 9)
-
-;#+b::mgr.toggleUserInterfaceBar()
-;#+d::mgr.toggleWindowHasCaption()
-;;#+Space::mgr.activateWindowsTaskbar()
-
-#^l::logger.setLevel(, -1)
-#^+l::logger.setLevel(, +1)
-#+l::logger.writeCacheToFile(A_WorkingDir . "\..\..\bug.n-log.md")
-#^q::ExitApp
-#^r::Reload

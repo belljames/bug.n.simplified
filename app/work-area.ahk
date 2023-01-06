@@ -22,8 +22,6 @@ class WorkArea extends Rectangle {
     this.gap := cfg.layoutGap
 
     this.isPrimary := False
-    this.showBar := cfg.showBar
-    this.uiface := ""
     
     this.layouts := []
     For i, item in cfg.defaultLayouts {
@@ -71,8 +69,6 @@ class WorkArea extends Rectangle {
         windows.push(wnd)
       }
     }
-    ; this.layoutA[1].arrange(this.x, this.y + (this.showBar && IsObject(this.uiface) ? this.uiface.barH : 0)
-    ;                       , this.w, this.h - (this.showBar && IsObject(this.uiface) ? this.uiface.barH : 0), windows)
   
       this.layoutA[1].arrange(this.gap, this.x , this.y , this.w , this.h, windows)
 

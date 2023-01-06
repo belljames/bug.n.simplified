@@ -26,13 +26,12 @@ started by putting them in there.
 #Include, %A_ScriptDir%\modules\layouts\dwm-monocle-layout.ahk
 #Include, %A_ScriptDir%\modules\layouts\dwm-tile-layout.ahk
 #Include, %A_ScriptDir%\modules\layouts\floating-layout.ahk
-#Include, %A_ScriptDir%\modules\layouts\i3wm-layout.ahk
 
 ;; If you remove one of the `layouts\*-layout.ahk` includes above and are using the `configuration\default`, 
 ;; you will also have to remove the corresponding item from `cfg.defaultLayouts` by redefining it below.
 
  #Include, %A_ScriptDir%\modules\user-interfaces\tray-icon-user-interface.ahk
- #Include, %A_ScriptDir%\modules\user-interfaces\app-user-interface.ahk
+;; #Include, %A_ScriptDir%\modules\user-interfaces\app-user-interface.ahk
  ;#Include, %A_ScriptDir%\modules\user-interfaces\system-status-bar-user-interface.ahk
 
 ;; If you remove one of the `user-interfaces\*-user-interface.ahk` includes above and are using the `configuration\default`,
@@ -43,7 +42,7 @@ class Customizations {
   __New() {
     Global cfg, logger
 
-    cfg.layoutGap := 3
+    cfg.layoutGap := 2
 
     ;; Overwrite cfg.* variables.       
     ;; The rules in `windowManagementRules` are processed in the order of the array.
@@ -67,18 +66,24 @@ class Customizations {
     ;; If `break` is set to `True`, the processing is stopped after evaluating the current rule.     
 
     cfg.windowManagementRules := [{windowProperties: {desktop: 0}, break: True} ;; Exclude hidden (?) windows.
-		;, {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
+		;;, {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
 		, {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
 		, {windowProperties: {pName: "EXCEL\.EXE", isPopup: True}, break: True} ;; Excel pop-up windows.
 		, {windowProperties: {class: "WorkerW", pName: "Explorer\.EXE"}, break: True} ;; Exclude pop-up windows.
 		, {windowProperties: {class: "DialogBox Container Class", pName: "saplogon\.exe"}, break: True} ;; Exclude pop-up windows.
-		;
+		, {windowProperties: {class: "ApplicationFrameWindow", title: "Calculator"}, break: True }
+		
+		;;
     , {windowProperties: {pName: "Greenshot\.exe"}, break: True}
     , {windowProperties: {pName: "ncpmon\.exe"}, break: True}
     , {windowProperties: {pName: "SWGVC\.exe"}, break: True}
     , {windowProperties: {pName: "f5vpn\.exe"}, break: True}
+    , {windowProperties: {pName: "xampp-control\.exe"}, break: True}
+		, {windowProperties: {pName: "KeePass\.exe"}, break: True} 
+		, {windowProperties: {class: "Notepad++"}, break: True} 
+				
+    , {windowProperties: {pName: "TogglTrack.exe\.exe"}, break: True}
 
-    , {windowProperties: {pName: "TogglDesktop\.exe"}, break: True}
     , {windowProperties: {pName: "Teams\.exe"}, break: True}
     , {windowProperties: {class: "CabinetWClass", pName: "Explorer\.EXE"}, break: True}
     , {windowProperties: {class: "TaskManagerWindow"}, break: True}
@@ -111,30 +116,11 @@ class Customizations {
 		 
      cfg.onMessageDelay := {shellEvent: 100, desktopChange: 200}
 
-		 /*
-    cfg.environments := {office: [{id: "Kalender.* ahk_exe OUTLOOK.EXE",                    workGroup: 1}
-                                , {id: "Posteingang.* ahk_exe OUTLOOK.EXE",                               position: 10}
-                                , {id: ".*Mozilla Firefox ahk_exe firefox.exe",             workGroup: 2, position: 10}]
-                          , dev: [{id: ".*bug\.n.* ahk_exe explorer.exe",       desktop: 2, workGroup: 1}
-                                , {id: ".*Textadept.* ahk_exe textadept.exe",   desktop: 2,               position: 11}]}
-
-      this.onMessageDelay := {shellEvent: 0, desktopChange: 200}
-      cfg.desktops := [{label: "1",    workAreas: [{rect: New Rectangle(  0, 0, 1366, 768), isPrimary: True,  showBar: True, layoutA: [1, 2]}]}
-                     , {label: "dev",  workAreas: [{rect: New Rectangle(  0, 0, 1366, 768), isPrimary: True,  showBar: True, layoutA: [1, 2]}]}
-                     , {label: "test", workAreas: [{rect: New Rectangle(  0, 0,  688, 768), isPrimary: True,  showBar: True, layoutA: [1, 3]}
-                                                 , {rect: New Rectangle(688, 0,  688, 768), isPrimary: False, showBar: True, layoutA: [1, 3]}]}
-                     , {label: "4",    workAreas: [{rect: New Rectangle(  0, 0, 1366, 768), isPrimary: True,  showBar: True, layoutA: [1, 2]}]}]
- */
-
     logger.info("<b>Custom</b> configuration loaded.", "Customizations.__New")
 		
   }
 
   _init() {
-    Global mgr
-
-    ;; get rid of user interface
-    ;;mgr.primaryUserInterface.Delete()
 
     ;; Overwrite hotkeys.
     ;; funcObject := ObjBindMethod(mgr, <function name> [, <function arguments>])
