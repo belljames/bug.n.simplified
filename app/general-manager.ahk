@@ -3,7 +3,7 @@
 :copyright: (c) 2019-2020 by joten <https://github.com/joten>
 :license:   GNU General Public License version 3
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
@@ -26,8 +26,6 @@ class GeneralManager {
     this._init("desktops")
     this.desktopA.push(this.desktops[A])
     this.dMgr.switchToDesktop(A)
-
-
 
     this.detectWindows()
 
@@ -95,7 +93,7 @@ class GeneralManager {
         , 14: "WINDOWREPLACING"
         , 16: "MONITORCHANGED"
         , 32772: "RUDEAPPACTIVATED"
-      , 32774: "FLASH"}
+        , 32774: "FLASH"}
       logger.info("ShellHook registered to window with id <mark>" . app.windowId . "</mark>.", "GeneralManager._init")
       ;; SKAN: How to Hook on to Shell to receive its messages? (http://www.autohotkey.com/forum/viewtopic.php?p=123323#123323)
 
@@ -112,7 +110,6 @@ class GeneralManager {
         }
         this.uifaces[i]._init()
       }
-
 
     }
   }
@@ -131,7 +128,6 @@ class GeneralManager {
     desktopA := updateActive(this.desktopA, this.desktops[A])
 
     ; changes := this.detectWindows()
-
 
   }
 
@@ -156,7 +152,6 @@ class GeneralManager {
       this.shellEventCache.push(this.primaryUserInterface.getContentItem("messages", data))
 
       changes := this.detectWindows()
-
 
       For id, wa in changes.workAreas {
         wa.arrange()
@@ -368,7 +363,7 @@ class GeneralManager {
     If (delta != 0) {
       index := index == 0 ? desktopA.index : index
       index := getIndex(index, delta, this.desktops.Length(), loop)
-      }
+    }
     If (index == 0 || index != desktopA.index) {
       this.setWindowDesktop(wnd, index)
     }
@@ -401,7 +396,7 @@ class GeneralManager {
     wnd := this.getWindow(winId)
     index := index == 0 ? desktopA.workAreaA[1].index : index
     index := getIndex(index, delta, desktopA.workAreas.Length(), loop)
-      this.setWindowWorkArea(wnd, desktopA.index . "-" . index)
+    this.setWindowWorkArea(wnd, desktopA.index . "-" . index)
     If (!wnd.isFloating) {
       desktopA.workAreas[index].arrange()
     }
@@ -462,7 +457,29 @@ class GeneralManager {
     wnd := this.getWindow(winId)
     MsgBox, 3, % app.name . ": Window Information", % wnd.information . "`n`nCopy window information to clipboard?"
     IfMsgBox Yes
-    Clipboard := wnd.information
+      Clipboard := wnd.information
+  }
+
+  floatingToBottom(){
+    ;; set zorder for any floating windows on active desktop & work area
+    For i, wa in this.desktopA.workAreas {
+      For j, wnd in wa.windows {
+        If (wnd.isFloating) {
+          WinSet, Bottom ,, wnd.id
+        }
+      }
+    }
+  }
+
+  floatingToTop(){
+    ;; set zorder for any floating windows on active desktop & work area
+    For i, wa in this.desktopA.workAreas {
+      For j, wnd in wa.windows {
+        If (wnd.isFloating) {
+          WinSet, Top ,, wnd.id
+        }
+      }
+    }
   }
 
   switchToDesktop(index := 0, delta := 0, loop := False) {
@@ -484,17 +501,12 @@ class GeneralManager {
     desktopA := updateActive(this.desktopA, this.desktops[this.dMgr.getCurrentDesktopIndex()])
     desktopA.workAreaA[1].switchToLayout(index, delta)
     desktopA.workAreaA[1].arrange()
-    this.updateBarItems()
   }
 
-  sdaswitchToWorkArea(index := 0, delta := 0, loop := False) {
+  switchToWorkArea(index := 0, delta := 0, loop := False) {
     desktopA := updateActive(this.desktopA, this.desktops[this.dMgr.getCurrentDesktopIndex()])
     desktopA.switchToWorkArea(index, delta, loop)
-      this.updateBarItems()
   }
-
-
-
 
   toggleWindowIsFloating(winId := 0) {
     wnd := this.getWindow(winId)
@@ -502,11 +514,8 @@ class GeneralManager {
     If (IsObject(wnd.workArea)) {
       wnd.workArea.arrange()
     }
-    this.updateBarItems()
   }
 }
-  
-
 
 class Desktop {
   __New(index, label) {
@@ -572,7 +581,7 @@ class Rectangle {
         If (result := coord.x >= this.x && coord.y >= this.y && coord.x <= this.x + this.w && coord.y <= this.y + this.h) {
           logger.debug("Rectangle " . (this.HasKey("id") ? "with id " . this.id . " " : "") . "(" . this.x . ", " . this.y . ", " . this.w . ", " . this.h
             . ") matches coordinates (" . i . ": " . coord.x . ", " . coord.y . ", " . coord.w . ", " . coord.h . ")"
-          . (this.HasKey("id") ? " from " . this.id : "") . ".", "Rectangle.match")
+            . (this.HasKey("id") ? " from " . this.id : "") . ".", "Rectangle.match")
           Break
         }
       }

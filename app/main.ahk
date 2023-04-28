@@ -3,114 +3,49 @@
 :copyright: (c) 2019-2020 by joten <https://github.com/joten>
 :license:   GNU General Public License version 3
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
 ;; script settings
-#NoEnv                        ;; Recommended for performance and compatibility with future AutoHotkey releases.
-#Warn                         ;; Enable warnings to assist with detecting common errors.
-SendMode Input                ;; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%   ;; Ensures a consistent starting directory.
+#NoEnv ;; Recommended for performance and compatibility with future AutoHotkey releases.
+#Warn ;; Enable warnings to assist with detecting common errors.
+SendMode Input ;; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir% ;; Ensures a consistent starting directory.
 #Persistent
 #SingleInstance Force
 #WinActivateForce
 DetectHiddenText, Off
 DetectHiddenWindows, Off
 OnExit("exitApp")
-SetBatchLines,    -1
-SetControlDelay,   0
-SetMouseDelay,     0
-SetTitleMatchMode, 3          ;; `TitleMatchMode` may be set to `RegEx` to enable a wider search, but should be reset afterwards.
-SetWinDelay,       0          ;; `WinDelay` may be set to a different value e.g. 10, if necessary to prevent timing issues, but should be reset afterwards.
+SetBatchLines, -1
+SetControlDelay, 0
+SetMouseDelay, 0
+SetTitleMatchMode, 3 ;; `TitleMatchMode` may be set to `RegEx` to enable a wider search, but should be reset afterwards.
+SetWinDelay, 0 ;; `WinDelay` may be set to a different value e.g. 10, if necessary to prevent timing issues, but should be reset afterwards.
 
 ;; pseudo main function
-  logger := New Logging()     ;; Primarily the cache will be written to a web interface
-                              ;; allowing text formatting with HTML tags: bold = <b>text</b>
-                              ;; , highlight = <mark>text</mark>, italic = <i>text</i>
-                              ;; , strikethrough = <s>text</s>, underline = <u>text</u>
-  const := New Constants()
-  app := New Application("bug.n X", "0.0.3")
-  
-  cfg := New Configuration()
-  custom := New Customizations()
-  custom._init()
-  
-  mgr := New GeneralManager()
-  logger.log(app.name . " started.")
+logger := New Logging() ;; Primarily the cache will be written to a web interface
+;; allowing text formatting with HTML tags: bold = <b>text</b>
+;; , highlight = <mark>text</mark>, italic = <i>text</i>
+;; , strikethrough = <s>text</s>, underline = <u>text</u>
+const := New Constants()
+app := New Application("bug.n X", "0.0.3")
 
+cfg := New Configuration()
+custom := New Customizations()
+custom._init()
 
-    !k::mgr.activateWindowAtIndex(,, -1)
-    !j::mgr.activateWindowAtIndex(,, +1)
+mgr := New GeneralManager()
+logger.log(app.name . " started.")
 
-    #+Left::mgr.setLayoutProperty("nmaster",, +1)
-    #+Right::mgr.setLayoutProperty("nmaster",, -1)
+eventHookAdr1 := RegisterCallback( "_onWinMinRestore", "F" )
+hWinEventHook1 := SetWinEventHook( 0x16, 0x17, 0, eventHookAdr1, 0, 0, 0 )
 
-    !h::mgr.setLayoutProperty("mfact",, -0.05)
-    !l::mgr.setLayoutProperty("mfact",, +0.05)
+eventHookAdr2 := RegisterCallback( "_onWinMax", "F" )
+hWinEventHook2 := SetWinEventHook( 0x800B, 0x800B, 0, eventHookAdr2, 0, 0, 0 )
 
-    !+k::mgr.moveWindowToPosition(,, -1)
-    !+j::mgr.moveWindowToPosition(,, +1)
-    !+Enter::mgr.moveWindowToPosition(, 1, 0)
-
-    #^i::mgr.showWindowInformation()
-
-    !q::mgr.closeWindow()
-
-    #t::mgr.switchToLayout(1)
-    #m::mgr.switchToLayout(2)
-    #b::mgr.switchToLayout(3)
-    #f::mgr.switchToLayout(4)
-
-    !Backspace::mgr.switchToLayout(, +1)
-    !+Backspace::mgr.switchToLayout(-1)
-    #Space::mgr.toggleWindowIsFloating()
-
-    !1::mgr.switchToDesktop(1)
-    !2::mgr.switchToDesktop(2)
-    !3::mgr.switchToDesktop(3)
-    !4::mgr.switchToDesktop(4)
-
-    ;;!+Tab::mgr.switchToDesktop(-1)
-
-    #!Left::mgr.switchToDesktop(, -1, True)
-    #!Right::mgr.switchToDesktop(, +1, True)
-
-    !+0::mgr.moveWindowToDesktop(, 0)
-    !+1::mgr.moveWindowToDesktop(, 1)
-    !+2::mgr.moveWindowToDesktop(, 2)
-    !+3::mgr.moveWindowToDesktop(, 3)
-    !+4::mgr.moveWindowToDesktop(, 4)
-
-    #^+Left::mgr.moveWindowToDesktop(,, -1)
-    #^+Right::mgr.moveWindowToDesktop(,, +1)
-
-    #,::mgr.switchToWorkArea(, -1)
-    #.::mgr.switchToWorkArea(, +1)
-
-    #Enter::mgr.moveWindowToWorkArea()
-    #+,::mgr.moveWindowToWorkArea(,, -1)
-    #+.::mgr.moveWindowToWorkArea(,, +1)
-
-    ;; bug.n x.min
-    ;#+q::mgr.moveWindowToPosition(, 1)
-    ;#+w::mgr.moveWindowToPosition(, 2)
-    ;#+e::mgr.moveWindowToPosition(, 3)
-    ;#+a::mgr.moveWindowToPosition(, 4)
-    ;#+s::mgr.moveWindowToPosition(, 5)
-    ;#+d::mgr.moveWindowToPosition(, 6)
-    ;#+y::mgr.moveWindowToPosition(, 7)
-    ;#+x::mgr.moveWindowToPosition(, 8)
-    ;#+c::mgr.moveWindowToPosition(, 9)
-
-    #^l::logger.setLevel(, -1)
-    #^+l::logger.setLevel(, +1)
-    #+l::logger.writeCacheToFile(A_WorkingDir . "\..\..\bug.n-log.md")
-    #^q::ExitApp
-    #^r::Reload
-
-
-
+Return
 
 ;; end of the auto-execute section
 
@@ -118,16 +53,16 @@ SetWinDelay,       0          ;; `WinDelay` may be set to a different value e.g.
 class Application {
   __New(name, version) {
     Global logger
-    
+
     this.name := name
     this.version := version
     this.logo := A_ScriptDir . "\assets\logo.ico"
     Menu, Tray, NoIcon
     this.uifaces := []
-    
+
     this.processId := DllCall("GetCurrentProcessId", "UInt")
     DetectHiddenWindows, On
-    this.windowId  := Format("0x{:x}", WinExist("ahk_pid " . this.processId))
+    this.windowId := Format("0x{:x}", WinExist("ahk_pid " . this.processId))
     DetectHiddenWindows, Off
     logger.info("Window with id <mark>" . this.windowId . "</mark> identified as the one of " . this.name . "'s process.", "Application.__New")
   }
@@ -135,13 +70,117 @@ class Application {
 
 exitApp() {
   Global app, cfg, logger, mgr
-  
+
   ;; Reset the main objects triggering their __Delete function.
   cfg := ""
   mgr := ""
-  
+
   logger.warning("Exiting " . app.name . ".", "exitApp")
 }
+
+SetWinEventHook(eventMin, eventMax, hmodWinEventProc, lpfnWinEventProc, idProcess, idThread, dwFlags)
+{
+  DllCall("CoInitialize", Uint, 0)
+  return DllCall("SetWinEventHook"
+    , Uint,eventMin
+    , Uint,eventMax
+    , Uint,hmodWinEventProc
+    , Uint,lpfnWinEventProc
+    , Uint,idProcess
+    , Uint,idThread
+    , Uint,dwFlags)
+}
+
+_onWinMinRestore( hWinEventHook, Event, hWnd, idObject, idChild, dwEventThread, dwmsEventTime )
+{
+  global mgr
+  Event += 0
+
+  if ( Event = 0x0016 )
+  {
+    Message = EVENT_SYSTEM_MINIMIZESTART
+  }
+  else if ( Event = 0x0017 )
+  {
+    Message = EVENT_SYSTEM_MINIMIZEEND
+  }
+
+  if ( Message == "" ) {
+    return
+  }
+
+  Sleep, 50 ; give a little time for WinGetTitle/WinGetActiveTitle functions, otherwise they return blank
+
+  Event += 0, hWnd += 0, idObject += 0, idChild += 0
+  wnd := mgr.getWindow(hWnd)
+  mgr.setWindowFloating(wnd, wnd.minMax != 0)
+  If (IsObject(wnd.workArea)) {
+    wnd.workArea.arrange()
+  }
+
+  ;; debugging
+  ;;mgr.showWindowInformation(hWnd)
+}
+
+_onWinMax( hWinEventHook, Event, hWnd, idObject, idChild, dwEventThread, dwmsEventTime )
+{
+  global mgr
+  Event += 0
+
+  WinGet, v_minmax, MinMax, hWnd
+
+  if ( Event = 0x800B && v_minmax == 1 )
+  {
+    Message = EVENT_OBJECT_LOCATIONCHANGE
+  }
+  Else
+  {
+    return
+  }
+
+  Sleep, 50 ; give a little time for WinGetTitle/WinGetActiveTitle functions, otherwise they return blank
+
+  Event += 0, hWnd += 0, idObject += 0, idChild += 0
+  wnd := mgr.getWindow(hWnd)
+  mgr.setWindowFloating(wnd, wnd.minMax != 0)
+  If (IsObject(wnd.workArea)) {
+    wnd.workArea.arrange()
+  }
+
+  ;; debugging
+  ;;mgr.showWindowInformation(hWnd)
+}
+
+; _onEventHook( hWinEventHook, Event, hWnd, idObject, idChild, dwEventThread, dwmsEventTime )
+; {
+;   global mgr
+;   Event += 0
+
+;   if ( Event = 0x0016 )
+;   {
+;     Message = EVENT_SYSTEM_MINIMIZESTART
+;   }
+;   else if ( Event = 0x0017 )
+;   {
+;     Message = EVENT_SYSTEM_MINIMIZEEND
+;   }
+;   else if ( Event = 0x800B )
+;   {
+;     Message = EVENT_OBJECT_LOCATIONCHANGE
+;   }
+
+;   Sleep, 50 ; give a little time for WinGetTitle/WinGetActiveTitle functions, otherwise they return blank
+
+;   Event += 0, hWnd += 0, idObject += 0, idChild += 0
+;   wnd := mgr.getWindow(hWnd)
+;   mgr.setWindowFloating(wnd, wnd.minMax != 0)
+;   If (IsObject(wnd.workArea)) {
+;     wnd.workArea.arrange()
+;   }
+
+;   ;; debugging
+;   ;;mgr.showWindowInformation(hWnd)
+; }
 
 #Include, %A_ScriptDir%\constants.ahk
 #Include, %A_ScriptDir%\desktop-manager.ahk
@@ -152,5 +191,4 @@ exitApp() {
 #Include, %A_ScriptDir%\work-area.ahk
 #Include, %A_ScriptDir%\modules\user-interfaces\tray-icon-user-interface.ahk
 #Include, %A_ScriptDir%\..\etc\custom.ahk
-
-
+#Include, %A_ScriptDir%\keybindings.ahk

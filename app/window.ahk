@@ -3,7 +3,7 @@
 :copyright: (c) 2018-2020 by joten <https://github.com/joten>
 :license:   GNU General Public License version 3
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
@@ -51,11 +51,12 @@ class Window extends Rectangle {
     ;   Note: Only the first 16 bytes of the RECTPlus structure are used by the
     ;   DwmGetWindowAttribute and GetWindowRect functions.
     VarSetCapacity(rectPlus, 24,0)
+
     DWMRC := DllCall("dwmapi\DwmGetWindowAttribute"
       , ptrType, this.id ;-- hwnd
       , "UInt", const.DWMWA_EXTENDED_FRAME_BOUNDS ;-- dwAttribute
       , ptrType, &rectPlus ;-- pvAttribute
-    , "UInt", 16) ;-- cbAttribute
+      , "UInt", 16) ;-- cbAttribute
 
     If (DWMRC <> const.S_OK) {
       If ErrorLevel in -3, -4 ;-- Dll or function not found (older than Vista)
@@ -112,7 +113,7 @@ class Window extends Rectangle {
     WinGet, winStyle, Style, % "ahk_id " . this.id
     WinGet, winExStyle, ExStyle, % "ahk_id " . this.id
     this.isResponding := DllCall("SendMessageTimeout", "UInt", this.id, "UInt", 0x0, "Int", 0, "Int", 0, "UInt", 0x2, "UInt", 150, "UInt *", 0)
-    ;; 150 = timeout in milliseconds  
+    ;; 150 = timeout in milliseconds
     this.title := winTitle
     this.style := winStyle
     this.exStyle := winExStyle
@@ -146,26 +147,26 @@ class Window extends Rectangle {
     get {
       this.getProperties(True)
       Return, "Id: `t" . this.id
-      . "`nTitle: `t" . SubStr(this.title, 1, 51) . (StrLen(this.title) > 51 ? "..." : "")
-      . "`nClass: `t" . this.class
-      . "`nStyle: `t" . this.style
-      . "`nExStyle: `t" . this.exStyle
-      . "`n"
-      . "`nProcess Id: `t" . this.pId
-      . "`nProcess Name: `t" . this.pName
-      . "`nProcess Path: `t" . SubStr(this.pPath, 1, 46) . (StrLen(this.pPath) > 46 ? "..." : "")
-      . "`n"
-      . "`nHas Caption: `t" . (this.hasCaption ? "yes" : "no")
-      . "`nIs App Window: `t" . (this.isAppWindow ? "yes" : "no")
-      . "`nIs Child: `t" . (this.isChild ? "yes" : "no")
-      . "`nIs Cloaked: `t" . (this.isCloaked ? "yes" : "no")
-      . "`nIs Elevated: `t" . (this.isElevated ? "yes" : "no")
-      . "`nIs Ghost: `t" . (this.isGhost ? "yes" : "no")
-      . "`nIs Popup: `t" . (this.isPopup ? "yes" : "no")
-      . "`nIs Min/Maximized: `t" . (this.minMax == -1 ? "min" : this.minMax == 1 ? "max" : "no")
-      . "`n"
-      . "`nIs Floating: `t" . (this.isFloating ? "yes" : "no")
-      . "`nWork Area Index: `t" . (IsObject(this.workArea) ? this.workArea.index : 0)
+        . "`nTitle: `t" . SubStr(this.title, 1, 51) . (StrLen(this.title) > 51 ? "..." : "")
+        . "`nClass: `t" . this.class
+        . "`nStyle: `t" . this.style
+        . "`nExStyle: `t" . this.exStyle
+        . "`n"
+        . "`nProcess Id: `t" . this.pId
+        . "`nProcess Name: `t" . this.pName
+        . "`nProcess Path: `t" . SubStr(this.pPath, 1, 46) . (StrLen(this.pPath) > 46 ? "..." : "")
+        . "`n"
+        . "`nHas Caption: `t" . (this.hasCaption ? "yes" : "no")
+        . "`nIs App Window: `t" . (this.isAppWindow ? "yes" : "no")
+        . "`nIs Child: `t" . (this.isChild ? "yes" : "no")
+        . "`nIs Cloaked: `t" . (this.isCloaked ? "yes" : "no")
+        . "`nIs Elevated: `t" . (this.isElevated ? "yes" : "no")
+        . "`nIs Ghost: `t" . (this.isGhost ? "yes" : "no")
+        . "`nIs Popup: `t" . (this.isPopup ? "yes" : "no")
+        . "`nIs Min/Maximized: `t" . (this.minMax == -1 ? "min" : this.minMax == 1 ? "max" : "no")
+        . "`n"
+        . "`nIs Floating: `t" . (this.isFloating ? "yes" : "no")
+        . "`nWork Area Index: `t" . (IsObject(this.workArea) ? this.workArea.index : 0)
     }
   }
 
