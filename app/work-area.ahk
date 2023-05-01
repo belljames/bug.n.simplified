@@ -3,14 +3,14 @@
 :copyright: (c) 2018-2020 by joten <https://github.com/joten>
 :license:   GNU General Public License version 3
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
 class WorkArea extends Rectangle {
   __New(desktopIndex, workAreaIndex, rect) {
     Global cfg
-    
+
     this.dIndex := desktopIndex
     this.index := workAreaIndex
     this.id := this.dIndex . "-" . this.index
@@ -18,11 +18,11 @@ class WorkArea extends Rectangle {
     this.y := rect.y
     this.w := rect.w
     this.h := rect.h
-    
+
     this.gap := cfg.layoutGap
 
     this.isPrimary := False
-    
+
     this.layouts := []
     For i, item in cfg.defaultLayouts {
       name := item.name
@@ -34,19 +34,17 @@ class WorkArea extends Rectangle {
       }
     }
     this.layoutA := [this.layouts[1], this.layouts[2]]
-    
+
     this.windows := []
     this.windowA := []
   }
-  
+
   activate() {
     If (this.windowA.Length() > 0) {
       this.windowA[1].runCommand("activate")
-    } Else {
-    ;;  this.uiface.wnd.runCommand("activate")
     }
   }
-  
+
   activateWindowAtIndex(wnd, index, delta, matchFloating) {
     currentIndex := (IsObject(wnd.workArea) && wnd.workArea.index == this.index) ? this.getWindowIndex(wnd) : 0
     index := index == 0 ? currentIndex : index
@@ -57,11 +55,11 @@ class WorkArea extends Rectangle {
       this.windows[index].runCommand("activate")
     }
   }
-  
+
   addWindow(wnd) {
     this.windows.InsertAt(1, wnd)
   }
-  
+
   arrange() {
     windows := []
     For i, wnd in this.windows {
@@ -69,11 +67,11 @@ class WorkArea extends Rectangle {
         windows.push(wnd)
       }
     }
-  
-      this.layoutA[1].arrange(this.gap, this.x , this.y , this.w , this.h, windows)
+
+    this.layoutA[1].arrange(this.gap, this.x , this.y , this.w , this.h, windows)
 
   }
-  
+
   getAdjacentWindowIndex(index, delta, matchFloating) {
     i := getIndex(index, delta, this.windows.Length())
     If (!matchFloating && this.windows[i].isFloating) {
@@ -88,7 +86,7 @@ class WorkArea extends Rectangle {
     }
     Return, i
   }
-  
+
   getWindowIndex(wnd) {
     index := 0
     For i, item in this.windows {
@@ -99,7 +97,7 @@ class WorkArea extends Rectangle {
     }
     Return, index
   }
-  
+
   moveWindowToPosition(wnd, index, delta) {
     ;; matchFloating := False
     currentIndex := this.getWindowIndex(wnd)
@@ -116,14 +114,14 @@ class WorkArea extends Rectangle {
       this.windows.InsertAt(index, wnd)
     }
   }
-  
+
   removeWindow(wnd) {
     this.windows.RemoveAt(this.getWindowIndex(wnd))
   }
-  
+
   setLayoutProperty(key, value, delta) {
     Global logger
-    
+
     If (this.layoutA[1].HasKey(key)) {
       funcObject := ObjBindMethod(this.layoutA[1], "set" . key)
       %funcObject%(value, delta)
@@ -131,7 +129,7 @@ class WorkArea extends Rectangle {
       logger.warning("Property <mark>" . key . "</mark> not known for layout <i>" . this.layoutA[1].name . "</i>.", "WorkArea.setLayoutProperty")
     }
   }
-  
+
   switchToLayout(index, delta) {
     If (index == 0) {
       index := this.layoutA[1].index

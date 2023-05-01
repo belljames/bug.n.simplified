@@ -460,26 +460,30 @@ class GeneralManager {
       Clipboard := wnd.information
   }
 
-  floatingToBottom(){
-    ;; set zorder for any floating windows on active desktop & work area
-    For i, wa in this.desktopA.workAreas {
+  tiledToBottom(){
+    ;; set zorder for any tiled windows on active desktop & work area
+    Critical
+    For i, wa in this.desktopA[1].workAreas {
       For j, wnd in wa.windows {
-        If (wnd.isFloating) {
-          WinSet, Bottom ,, wnd.id
+        If !(wnd.isFloating) {
+          wnd.runCommand("bottom")
         }
       }
     }
+    ;; todo set cfg global to use this on desktop changes or floating / tiled window activation
   }
 
-  floatingToTop(){
+  tiledToTop(){
     ;; set zorder for any floating windows on active desktop & work area
-    For i, wa in this.desktopA.workAreas {
+    Critical
+    For i, wa in this.desktopA[1].workAreas {
       For j, wnd in wa.windows {
-        If (wnd.isFloating) {
-          WinSet, Top ,, wnd.id
+        If !(wnd.isFloating) {
+          wnd.runCommand("activate")
         }
       }
     }
+    ;; todo set cfg global to use this on desktop changes or floating / tiled window activation
   }
 
   switchToDesktop(index := 0, delta := 0, loop := False) {
@@ -495,6 +499,9 @@ class GeneralManager {
       desktopA := updateActive(this.desktopA, this.desktops[this.dMgr.getCurrentDesktopIndex()])
       desktopA.switchToWorkArea()
     }
+
+    this.tiledToTop()
+
   }
 
   switchToLayout(index := 0, delta := 0) {

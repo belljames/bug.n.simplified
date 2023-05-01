@@ -1,6 +1,8 @@
 ;; key bindings
 ;; =====================================
 
+global mgr
+
 !k::mgr.activateWindowAtIndex(,, -1)
 !j::mgr.activateWindowAtIndex(,, +1)
 
@@ -14,8 +16,8 @@
 !+j::mgr.moveWindowToPosition(,, +1)
 !+Enter::mgr.moveWindowToPosition(, 1, 0)
 
-!+u::mgr.floatingToTop()
-!+i::mgr.floatingToBottom()
+!+u::mgr.tiledToTop()
+!+i::mgr.tiledToBottom()
 
 #^i::mgr.showWindowInformation()
 

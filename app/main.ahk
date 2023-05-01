@@ -94,30 +94,32 @@ SetWinEventHook(eventMin, eventMax, hmodWinEventProc, lpfnWinEventProc, idProces
 _onWinMinRestore( hWinEventHook, Event, hWnd, idObject, idChild, dwEventThread, dwmsEventTime )
 {
   global mgr
-  Event += 0
-
-  if ( Event = 0x0016 )
-  {
-    Message = EVENT_SYSTEM_MINIMIZESTART
-  }
-  else if ( Event = 0x0017 )
-  {
-    Message = EVENT_SYSTEM_MINIMIZEEND
-  }
-
-  if ( Message == "" ) {
-    return
-  }
-
-  Sleep, 50 ; give a little time for WinGetTitle/WinGetActiveTitle functions, otherwise they return blank
-
   Event += 0, hWnd += 0, idObject += 0, idChild += 0
-  wnd := mgr.getWindow(hWnd)
-  mgr.setWindowFloating(wnd, wnd.minMax != 0)
-  If (IsObject(wnd.workArea)) {
-    wnd.workArea.arrange()
-  }
 
+  if (hWnd != 0){
+
+    if ( Event = 0x0016 )
+    {
+      Message = EVENT_SYSTEM_MINIMIZESTART
+    }
+    else if ( Event = 0x0017 )
+    {
+      Message = EVENT_SYSTEM_MINIMIZEEND
+    }
+
+    if ( Message == "" ) {
+      return
+    }
+
+    Sleep, 50 ; give a little time for WinGetTitle/WinGetActiveTitle functions, otherwise they return blank
+
+    wnd := mgr.getWindow(hWnd)
+    mgr.setWindowFloating(wnd, wnd.minMax != 0)
+    If (IsObject(wnd.workArea))
+    {
+      wnd.workArea.arrange()
+    }
+  }
   ;; debugging
   ;;mgr.showWindowInformation(hWnd)
 }
@@ -125,62 +127,33 @@ _onWinMinRestore( hWinEventHook, Event, hWnd, idObject, idChild, dwEventThread, 
 _onWinMax( hWinEventHook, Event, hWnd, idObject, idChild, dwEventThread, dwmsEventTime )
 {
   global mgr
-  Event += 0
-
-  WinGet, v_minmax, MinMax, hWnd
-
-  if ( Event = 0x800B && v_minmax == 1 )
-  {
-    Message = EVENT_OBJECT_LOCATIONCHANGE
-  }
-  Else
-  {
-    return
-  }
-
-  Sleep, 50 ; give a little time for WinGetTitle/WinGetActiveTitle functions, otherwise they return blank
-
   Event += 0, hWnd += 0, idObject += 0, idChild += 0
-  wnd := mgr.getWindow(hWnd)
-  mgr.setWindowFloating(wnd, wnd.minMax != 0)
-  If (IsObject(wnd.workArea)) {
-    wnd.workArea.arrange()
-  }
 
+  if (hWnd != 0){
+
+    WinGet, v_minmax, MinMax, hWnd
+
+    if ( Event = 0x800B && v_minmax == 1 )
+    {
+      Message = EVENT_OBJECT_LOCATIONCHANGE
+    }
+    Else
+    {
+      return
+    }
+
+    Sleep, 50 ; give a little time for WinGetTitle/WinGetActiveTitle functions, otherwise they return blank
+
+    wnd := mgr.getWindow(hWnd)
+    mgr.setWindowFloating(wnd, wnd.minMax != 0)
+    If (IsObject(wnd.workArea))
+    {
+      wnd.workArea.arrange()
+    }
+  }
   ;; debugging
   ;;mgr.showWindowInformation(hWnd)
 }
-
-; _onEventHook( hWinEventHook, Event, hWnd, idObject, idChild, dwEventThread, dwmsEventTime )
-; {
-;   global mgr
-;   Event += 0
-
-;   if ( Event = 0x0016 )
-;   {
-;     Message = EVENT_SYSTEM_MINIMIZESTART
-;   }
-;   else if ( Event = 0x0017 )
-;   {
-;     Message = EVENT_SYSTEM_MINIMIZEEND
-;   }
-;   else if ( Event = 0x800B )
-;   {
-;     Message = EVENT_OBJECT_LOCATIONCHANGE
-;   }
-
-;   Sleep, 50 ; give a little time for WinGetTitle/WinGetActiveTitle functions, otherwise they return blank
-
-;   Event += 0, hWnd += 0, idObject += 0, idChild += 0
-;   wnd := mgr.getWindow(hWnd)
-;   mgr.setWindowFloating(wnd, wnd.minMax != 0)
-;   If (IsObject(wnd.workArea)) {
-;     wnd.workArea.arrange()
-;   }
-
-;   ;; debugging
-;   ;;mgr.showWindowInformation(hWnd)
-; }
 
 #Include, %A_ScriptDir%\constants.ahk
 #Include, %A_ScriptDir%\desktop-manager.ahk
