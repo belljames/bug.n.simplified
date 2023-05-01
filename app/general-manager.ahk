@@ -480,6 +480,8 @@ class GeneralManager {
       For j, wnd in wa.windows {
         If !(wnd.isFloating) {
           wnd.runCommand("activate")
+          ;;wnd.runCommand("setAlwaysOnTop")
+          ;;wnd.runCommand("toggleAlwaysOnTop")
         }
       }
     }
