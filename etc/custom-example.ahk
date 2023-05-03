@@ -69,7 +69,6 @@ class Customizations {
     If (A_ComputerName == "SILKIE") {
       cfg.networkInterfaces := ["AR9002WB"]
       cfg.defaultSystemStatusBarItems := {battery: 21, volume: 22, date: 23, time: 24}
-      ; cfg.userInterfaces.push({name: "SystemStatusBarUserInterface", y: 30, w: 1366, h: 19, transparency: 192})
       ; cfg.showAllDesktops := False
       this.onMessageDelay := {shellEvent: 0, desktopChange: 200}
       cfg.desktops := [{label: "1",    workAreas: [{rect: New Rectangle(  0, 0, 1366, 768), isPrimary: True,  showBar: True, layoutA: [1, 2]}]}
