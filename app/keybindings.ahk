@@ -16,8 +16,8 @@ global mgr
 !+j::mgr.moveWindowToPosition(,, +1)
 !+Enter::mgr.moveWindowToPosition(, 1, 0)
 
-!+u::mgr.tiledToTop()
-!+i::mgr.tiledToBottom()
+!+u::mgr.floatingToTop()
+!+i::mgr.floatingToBottom()
 
 #^i::mgr.showWindowInformation()
 

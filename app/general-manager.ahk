@@ -23,6 +23,7 @@ class GeneralManager {
     ;; Initialize desktops and work areas.
     this.dMgr := New DesktopManager(ObjBindMethod(this, "_onTaskbarCreated"), ObjBindMethod(this, "_onDesktopChange"))
     A := this.dMgr.getCurrentDesktopIndex()
+
     this._init("desktops")
     this.desktopA.push(this.desktops[A])
     this.dMgr.switchToDesktop(A)
@@ -30,7 +31,6 @@ class GeneralManager {
     this.detectWindows()
 
     this._init("user interfaces")
-
     For i, item in this.desktopA[1].workAreas {
       item.arrange()
     }
@@ -489,6 +489,8 @@ class GeneralManager {
   }
 
   switchToDesktop(index := 0, delta := 0, loop := False) {
+    global tray
+
     desktopA := updateActive(this.desktopA, this.desktops[this.dMgr.getCurrentDesktopIndex()])
     If (index == 0) {
       index := desktopA.index
@@ -503,6 +505,7 @@ class GeneralManager {
     }
 
     this.tiledToTop()
+    tray.setTrayIcon(index)
 
   }
 

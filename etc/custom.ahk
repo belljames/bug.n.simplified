@@ -27,15 +27,6 @@ started by putting them in there.
 #Include, %A_ScriptDir%\modules\layouts\dwm-tile-layout.ahk
 #Include, %A_ScriptDir%\modules\layouts\floating-layout.ahk
 
-;; If you remove one of the `layouts\*-layout.ahk` includes above and are using the `configuration\default`,
-;; you will also have to remove the corresponding item from `cfg.defaultLayouts` by redefining it below.
-
-#Include, %A_ScriptDir%\modules\user-interfaces\tray-icon-user-interface.ahk
-;; #Include, %A_ScriptDir%\modules\user-interfaces\app-user-interface.ahk
-;#Include, %A_ScriptDir%\modules\user-interfaces\system-status-bar-user-interface.ahk
-
-;; If you remove one of the `user-interfaces\*-user-interface.ahk` includes above and are using the `configuration\default`,
-;; you will also have to remove the corresponding item from `cfg.userInterfaces` by redefining it below.
 
 ;; Custom code.
 class Customizations {
@@ -66,7 +57,7 @@ class Customizations {
     ;; If `break` is set to `True`, the processing is stopped after evaluating the current rule.
 
     cfg.windowManagementRules := [{windowProperties: {desktop: 0}, break: True} ;; Exclude hidden (?) windows.
-      ;;, {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
+;;      , {windowProperties: {isPopup: True}, break: True} ;; Exclude pop-up windows.
       , {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
       , {windowProperties: {pName: "EXCEL\.EXE", isPopup: True}, break: True} ;; Excel pop-up windows.
       , {windowProperties: {class: "WorkerW", pName: "Explorer\.EXE"}, break: True} ;; Exclude pop-up windows.
@@ -115,7 +106,7 @@ class Customizations {
 
     cfg.positions[11] := [ 0, 0, 70, 100]	;; left 0.70
 
-    cfg.onMessageDelay := {shellEvent: 100, desktopChange: 200}
+    cfg.onMessageDelay := {shellEvent: 200, desktopChange: 200}
 
     logger.info("<b>Custom</b> configuration loaded.", "Customizations.__New")
 

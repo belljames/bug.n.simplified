@@ -30,7 +30,7 @@ logger := New Logging() ;; Primarily the cache will be written to a web interfac
 ;; , highlight = <mark>text</mark>, italic = <i>text</i>
 ;; , strikethrough = <s>text</s>, underline = <u>text</u>
 const := New Constants()
-app := New Application("bug.n X", "0.0.3")
+app := New Application("bug.n X", "0.0.4")
 
 cfg := New Configuration()
 custom := New Customizations()
@@ -45,6 +45,8 @@ hWinEventHook1 := SetWinEventHook( 0x16, 0x17, 0, eventHookAdr1, 0, 0, 0 )
 eventHookAdr2 := RegisterCallback( "_onWinMax", "F" )
 hWinEventHook2 := SetWinEventHook( 0x800B, 0x800B, 0, eventHookAdr2, 0, 0, 0 )
 
+tray := New TrayIcon()
+
 Return
 
 ;; end of the auto-execute section
@@ -56,9 +58,9 @@ class Application {
 
     this.name := name
     this.version := version
-    this.logo := A_ScriptDir . "\assets\logo.ico"
-    Menu, Tray, NoIcon
-    this.uifaces := []
+    ;this.logo := A_ScriptDir . "\assets\logo.ico"
+    ;Menu, Tray, NoIcon
+    ;this.uifaces := []
 
     this.processId := DllCall("GetCurrentProcessId", "UInt")
     DetectHiddenWindows, On
@@ -69,13 +71,20 @@ class Application {
 }
 
 exitApp() {
-  Global app, cfg, logger, mgr
+  Global app, cfg, logger, mgr, hWinEventHook1, hWinEventHook2
 
   ;; Reset the main objects triggering their __Delete function.
   cfg := ""
   mgr := ""
 
+  nCheck := DllCall( "UnhookWinEvent", Ptr,hWinEventHook1 )
+  DllCall( "CoUninitialize" )
+
+  nCheck := DllCall( "UnhookWinEvent", Ptr,hWinEventHook2 )
+  DllCall( "CoUninitialize" )
+
   logger.warning("Exiting " . app.name . ".", "exitApp")
+
 }
 
 SetWinEventHook(eventMin, eventMax, hmodWinEventProc, lpfnWinEventProc, idProcess, idThread, dwFlags)
@@ -162,6 +171,6 @@ _onWinMax( hWinEventHook, Event, hWnd, idObject, idChild, dwEventThread, dwmsEve
 #Include, %A_ScriptDir%\monitor-manager.ahk
 #Include, %A_ScriptDir%\window.ahk
 #Include, %A_ScriptDir%\work-area.ahk
-#Include, %A_ScriptDir%\modules\user-interfaces\tray-icon-user-interface.ahk
 #Include, %A_ScriptDir%\..\etc\custom.ahk
 #Include, %A_ScriptDir%\keybindings.ahk
+#Include, %A_ScriptDir%\tray-icon.ahk

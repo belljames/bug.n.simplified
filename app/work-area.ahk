@@ -61,6 +61,7 @@ class WorkArea extends Rectangle {
   }
 
   arrange() {
+    critical
     windows := []
     For i, wnd in this.windows {
       If (!wnd.isFloating and wnd.desktop != 0) {
