@@ -3,7 +3,7 @@
 :copyright: (c) 2019-2020 by joten <https://github.com/joten>
 :license:   GNU General Public License version 3
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
@@ -13,7 +13,7 @@ class DwmMonocleLayout {
     this.name := "DwmMonocleLayout"
     this.symbol := "[M]"
   }
-  
+
   arrange(gap, x, y, w, h, windows) {
 
     wndX := x + gap
@@ -23,6 +23,7 @@ class DwmMonocleLayout {
 
     For i, wnd in windows {
       wnd.move(wndX, wndY, wndW, wndH)
+      windows[A_Index].runCommand("bottom")
     }
     this.symbol := "[" . windows.Length() . "]"
   }

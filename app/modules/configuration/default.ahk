@@ -13,7 +13,7 @@ class Configuration {
 
     this.name := "Default"
 
-    this.desktops := [{label: "1"}, {label: "2"}, {label: "3"}, {label: "4"}]
+    this.desktops := [{label: "1"}, {label: "2"}, {label: "3"}, {label: "4"},{label: "5"}, {label: "6"},{label: "7"},{label: "8"},{label: "9"}]
     this.defaultLayouts := [{symbol: "[]=", name: "DwmTileLayout", mfact: 0.55, nmaster: 1}
       , {symbol: "[M]", name: "DwmMonocleLayout"}
       , {symbol: "TTT", name: "DwmBottomStackLayout", mfact: 0.55, nmaster: 1}

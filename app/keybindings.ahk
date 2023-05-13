@@ -16,26 +16,34 @@ global mgr
 !+j::mgr.moveWindowToPosition(,, +1)
 !+Enter::mgr.moveWindowToPosition(, 1, 0)
 
+!+p::mgr.runOrActivate("ahk_exe KeePass.exe", "C:\\Program Files\\KeePass Password Safe 2\\KeePass.exe")
+!+n::mgr.runOrActivate("ahk_exe notepad++.exe", "C:\\Program Files\\Notepad++\\notepad++.exe")
+
 !+u::mgr.floatingToTop()
 !+i::mgr.floatingToBottom()
 
-#^i::mgr.showWindowInformation()
+#+i::mgr.showWindowInformation()
 
 !q::mgr.closeWindow()
 
-#t::mgr.switchToLayout(1)
-#m::mgr.switchToLayout(2)
-#b::mgr.switchToLayout(3)
-#f::mgr.switchToLayout(4)
+#+t::mgr.switchToLayout(1)
+#+m::mgr.switchToLayout(2)
+#+b::mgr.switchToLayout(3)
+#+f::mgr.switchToLayout(4)
+#+Space::mgr.toggleWindowIsFloating()
 
 !Backspace::mgr.switchToLayout(, +1)
 !+Backspace::mgr.switchToLayout(-1)
-#Space::mgr.toggleWindowIsFloating()
 
 !1::mgr.switchToDesktop(1)
 !2::mgr.switchToDesktop(2)
 !3::mgr.switchToDesktop(3)
 !4::mgr.switchToDesktop(4)
+!5::mgr.switchToDesktop(5)
+!6::mgr.switchToDesktop(6)
+!7::mgr.switchToDesktop(7)
+!8::mgr.switchToDesktop(8)
+!9::mgr.switchToDesktop(9)
 
 ;;!+Tab::mgr.switchToDesktop(-1)
 
@@ -47,6 +55,11 @@ global mgr
 !+2::mgr.moveWindowToDesktop(, 2)
 !+3::mgr.moveWindowToDesktop(, 3)
 !+4::mgr.moveWindowToDesktop(, 4)
+!+5::mgr.moveWindowToDesktop(, 5)
+!+6::mgr.moveWindowToDesktop(, 6)
+!+7::mgr.moveWindowToDesktop(, 7)
+!+8::mgr.moveWindowToDesktop(, 8)
+!+9::mgr.moveWindowToDesktop(, 9)
 
 #^+Left::mgr.moveWindowToDesktop(,, -1)
 #^+Right::mgr.moveWindowToDesktop(,, +1)

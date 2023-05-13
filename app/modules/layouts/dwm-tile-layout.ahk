@@ -3,7 +3,7 @@
 :copyright: (c) 2019-2020 by joten <https://github.com/joten>
 :license:   GNU General Public License version 3
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
@@ -30,13 +30,14 @@ class DwmTileLayout {
 
     Loop, % m {
       windows[A_Index].move(wndX, wndY, wndW, wndH)
-      windows[A_Index].runCommand("top")
+      ;;windows[A_Index].runCommand("top")
+      windows[A_Index].runCommand("bottom")
       wndY += wndH
     }
     ;; Arrange windows in stack area.
     n := windows.Length() - m
-    if (n == 0) { 
-      Return 
+    if (n == 0) {
+      Return
     }
 
     ;; if < 3 windows in stack area, divide space evenly
@@ -54,12 +55,13 @@ class DwmTileLayout {
       Loop, % n {
         i := m + A_Index
         windows[i].move(wndX, wndY, wndW, wndH)
-        windows[i].runCommand("top")
+        ;;windows[A_Index].runCommand("top")
+        windows[A_Index].runCommand("bottom")
         wndY += wndH + gap
       }
     } else {
       ;; if > 2 windows in stack area, they're basically just titelbars
-      ;; switch to cascade so we can see their contents 
+      ;; switch to cascade so we can see their contents
 
       wndX := (x + (this.mfact * w)) ;+ gap
       wndY := y + gap
@@ -73,11 +75,12 @@ class DwmTileLayout {
         i := m + A_Index
         windows[i].move(wndX, wndY, wndW, wndH)
         ;  windows[i].runCommand("top")
+        windows[A_Index].runCommand("bottom")
 
         ;; set up next window
         wndY += titleBarHeight + gap
         wndH -= ( titleBarHeight + gap )
-      } 
+      }
     }
   }
 

@@ -9,7 +9,7 @@ without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 
 class GeneralManager {
   __New() {
-    Global logger
+    Global logger, tray
 
     this.desktops := []
     this.desktopA := [] ;; TODO: Track the active desktop, or simply use `this.dMgr.getCurrentDesktopIndex`, when the information is needed?
@@ -23,6 +23,8 @@ class GeneralManager {
     ;; Initialize desktops and work areas.
     this.dMgr := New DesktopManager(ObjBindMethod(this, "_onTaskbarCreated"), ObjBindMethod(this, "_onDesktopChange"))
     A := this.dMgr.getCurrentDesktopIndex()
+    tray := new TrayIcon()
+    tray.setTrayIcon(A)
 
     this._init("desktops")
     this.desktopA.push(this.desktops[A])
@@ -97,28 +99,11 @@ class GeneralManager {
       logger.info("ShellHook registered to window with id <mark>" . app.windowId . "</mark>.", "GeneralManager._init")
       ;; SKAN: How to Hook on to Shell to receive its messages? (http://www.autohotkey.com/forum/viewtopic.php?p=123323#123323)
 
-      ;; User Interfaces
-    } Else If (part == "user interfaces") {
-      For i, item in cfg.userInterfaces {
-        name := item.name
-        this.uifaces[i] := New %name%(i)
-        this.uifaces[i]["appCallFuncObject"] := ObjBindMethod(this, "_onAppCall")
-        For key, value in this.uifaces[i] {
-          If (item.HasKey(key)) {
-            this.uifaces[i][key] := item[key]
-          }
-        }
-        this.uifaces[i]._init()
-      }
-
     }
   }
 
-  _onAppCall(uri) {
-  }
-
   _onDesktopChange(wParam, lParam, msg, winId) {
-    Global cfg, logger
+    Global cfg, logger, tray
 
     ;; Detect changes:
     ;; current monitor/ desktop/ window, different windows on desktop
@@ -127,8 +112,8 @@ class GeneralManager {
     logger.info("Desktop changed from <i>" . this.desktopA[2].index . "</i> to <b>" . A . "</b>.", "GeneralManager._onDesktopChange")
     desktopA := updateActive(this.desktopA, this.desktops[A])
 
-    ; changes := this.detectWindows()
-
+    tray.setTrayIcon(A)
+    this.tiledToBottom()
   }
 
   _onDisplayChange(wParam, lParam) {
@@ -489,7 +474,6 @@ class GeneralManager {
   }
 
   switchToDesktop(index := 0, delta := 0, loop := False) {
-    global tray
 
     desktopA := updateActive(this.desktopA, this.desktops[this.dMgr.getCurrentDesktopIndex()])
     If (index == 0) {
@@ -503,9 +487,6 @@ class GeneralManager {
       desktopA := updateActive(this.desktopA, this.desktops[this.dMgr.getCurrentDesktopIndex()])
       desktopA.switchToWorkArea()
     }
-
-    this.tiledToTop()
-    tray.setTrayIcon(index)
 
   }
 
@@ -527,6 +508,32 @@ class GeneralManager {
       wnd.workArea.arrange()
     }
   }
+
+  toggleScratchPad() {
+    ; ;; todo set up scratchpads in config
+
+    ; ;; toggle visibility of the specified process ID app in quake style window
+
+  }
+
+  runOrActivate(WinTitle, Target ){
+    IfWinExist, %WinTitle%
+    {
+      IfWinActive, %WinTitle%
+      {
+        WinMinimize, %WinTitle%
+      }
+      else
+      {
+        WinActivate, %WinTitle%
+      }
+    }
+    else
+    {
+      Run, %Target%
+    }
+  }
+
 }
 
 class Desktop {

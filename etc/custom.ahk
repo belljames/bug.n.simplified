@@ -27,7 +27,6 @@ started by putting them in there.
 #Include, %A_ScriptDir%\modules\layouts\dwm-tile-layout.ahk
 #Include, %A_ScriptDir%\modules\layouts\floating-layout.ahk
 
-
 ;; Custom code.
 class Customizations {
   __New() {
@@ -57,7 +56,7 @@ class Customizations {
     ;; If `break` is set to `True`, the processing is stopped after evaluating the current rule.
 
     cfg.windowManagementRules := [{windowProperties: {desktop: 0}, break: True} ;; Exclude hidden (?) windows.
-;;      , {windowProperties: {isPopup: True}, break: True} ;; Exclude pop-up windows.
+      ;;      , {windowProperties: {isPopup: True}, break: True} ;; Exclude pop-up windows.
       , {windowProperties: {class: "#32770", isPopup: True}, break: True} ;; Exclude pop-up windows.
       , {windowProperties: {pName: "EXCEL\.EXE", isPopup: True}, break: True} ;; Excel pop-up windows.
       , {windowProperties: {class: "WorkerW", pName: "Explorer\.EXE"}, break: True} ;; Exclude pop-up windows.
@@ -70,8 +69,8 @@ class Customizations {
       , {windowProperties: {pName: "SWGVC\.exe"}, break: True}
       , {windowProperties: {pName: "f5vpn\.exe"}, break: True}
       , {windowProperties: {pName: "xampp-control\.exe"}, break: True}
-      ; , {windowProperties: {pName: "KeePass\.exe"}, break: True}
-      ; , {windowProperties: {class: "Notepad++"}, break: True}
+      , {windowProperties: {pName: "KeePass\.exe"}, break: True}
+      , {windowProperties: {class: "Notepad++"}, break: True}
 
       , {windowProperties: {pName: "TogglTrack\.exe"}, break: True}
 

@@ -45,7 +45,6 @@ hWinEventHook1 := SetWinEventHook( 0x16, 0x17, 0, eventHookAdr1, 0, 0, 0 )
 eventHookAdr2 := RegisterCallback( "_onWinMax", "F" )
 hWinEventHook2 := SetWinEventHook( 0x800B, 0x800B, 0, eventHookAdr2, 0, 0, 0 )
 
-tray := New TrayIcon()
 
 Return
 
